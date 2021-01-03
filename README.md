@@ -1,70 +1,57 @@
-# Getting Started with Create React App
+# Configure Less with React
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+在学习 Less 的语法时, 想结合 React 一起练习, 但是苦恼 Less 无法直接在 create-react-app 搭建的 React 开发环境中直接使用. 我在网上搜索🔍到里一篇挺好的 Less 和 React 的配置[文章](https://medium.com/@sunilkumarbanjare/configure-less-with-ant-design-in-react-ba238faedb39), 但需要引入 [antd](https://ant.design/components/overview/).(虽然我平时开发也是使用antd, 但是我更喜欢 Material-UI 😄)
 
-## Available Scripts
+## 配置的大致流程
 
-In the project directory, you can run:
+安装依赖
 
-### `npm start`
+```bash
+npm install antd @craco/craco craco-antd craco-less less-loader --save
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+项目根路径创建 `craco.config.js`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```js
+const CracoLessPlugin = require('craco-less')
 
-### `npm test`
+module.exports = {
+    plugins: [
+        {
+            plugin: CracoLessPlugin,
+            options: {
+                lessLoaderOptions: {
+                    lessOptions: {
+                        javascriptEnabled: true
+                    }
+                }
+            }
+        }
+    ]
+};
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+修改 `package.json`
 
-### `npm run build`
+```json
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "react-scripts eject"
+  },
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+引入 antd.less 测试搭建结果
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```less
+@import ‘~antd/dist/antd.less’;
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 运行项目
 
-### `npm run eject`
+```bash
+npm install
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+npm run start
+```
